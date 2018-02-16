@@ -20,6 +20,9 @@
 			height:100%;
 			overflow: hidden;
 		}
+		#gameControl{
+			/*display: none;*/
+		}
 
 	</style>
 </head>
@@ -31,22 +34,35 @@
 	
 
 </div>
+<div class="row text-center">
+<div id = "gameControl" class="btn btn-default ">
+	Game Restart
+</div>
+</div>
 <script>
 	var tileImages = ['tile_1.jpg','tile_2.jpg','tile_3.jpg','tile_4.jpg','tile_5.jpg','tile_6.jpg'];
 	console.log(tileImages)
+
+	document.getElementById("gameControl").addEventListener("click",startGame);
 
 	var solutionArray = tileImages.concat(tileImages)
 	var gameboard = document.getElementById("gameboard");
 	flipArray = new Array();
 	var cardsflippedover = 0;
+	var lastCardPicked=-1;
+	var timer ='';
+	var score = 0;
 
-	shuffleArray(solutionArray)
+	
 
 	startGame()
 	function startGame(){
+		shuffleArray(solutionArray)
+		clearInterval(timer);
+		score = 0;
 		gameboard.innerHTML="";
 		for(var i=0;i<=solutionArray.length-1;i++){
-			displayImage(i)
+			gameboard.innerHTML+='<div class="col-md-3 col-xs-4 gametile "><img id = "cardz'+i+'" src="./img/tile_1.jpg'+'"onclick= "pickCard(\''+solutionArray[i]+'\',\''+i+'\',this); return false;" class="flipimage"></div>';
 		}
 	}
 
@@ -60,13 +76,12 @@
 		return d;
 	};
 
-	function displayImage(i){
-			gameboard.innerHTML+='<div class="col-md-3 col-xs-4 gametile "><img id = "cardz'+i+'" src="./img/tile_1.jpg'+'"onclick= "pickCard(\''+solutionArray[i]+'\',\''+i+'\',this); return false;" class="flipimage"></div>';
-	}
+
 
 	function pickCard(a,b,c){
 		
-		if(cardsflippedover<2){
+
+		if(cardsflippedover<2 && lastCardPicked != b){
 			flipArray[cardsflippedover] = solutionArray[b]
 			flipArray[(cardsflippedover+2)] = c.id;
 			cardsflippedover++;
@@ -75,20 +90,38 @@
 			if(cardsflippedover==2){
 				if(flipArray[0]==flipArray[1]){
 					console.log('same')
+					pickagain();
+					score++;
+					if(tileImages.length<=score){
+						console.log('END GAME');
+
+					}
 
 				}else{
-					setInterval(hideCard,3000)
+					timer = setInterval(hideCard,3000)
 					console.log('different')
 				}
+				
 			}
+			lastCardPicked = b;
 		}	
-		console.log(flipArray)
+		//console.log(flipArray)
 
 	}
 
+
+function pickagain(){
+	cardsflippedover = 0;
+	flipArray = [];
+	lastCardPicked = -1;
+	clearInterval(timer);
+
+}
 	function hideCard(){
 		document.getElementById(flipArray[2]).src = "./img/tile_1.jpg"
 		document.getElementById(flipArray[3]).src = "./img/tile_1.jpg"
+		pickagain();
+
 	}
 </script>
 </div>
