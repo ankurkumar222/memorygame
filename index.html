@@ -13,6 +13,8 @@
 		.gametile{
 			height: 200px;
 			border:#000000 1px solid;
+			padding: 0;
+			margin: 0;
 		}
 
 		.flipimage{
@@ -23,6 +25,11 @@
 		#gameControl{
 			/*display: none;*/
 		}
+		#message{
+			font-size: 1.5em;
+			color: #D1090C;
+			background: 
+		}
 
 	</style>
 </head>
@@ -31,7 +38,7 @@
 <div id = "wrapper">
 <div id="wrapper"></div>
 <div id ="gameboard">
-	
+<div id="message"></div>	
 
 </div>
 <div class="row text-center">
@@ -94,6 +101,7 @@
 					score++;
 					if(tileImages.length<=score){
 						console.log('END GAME');
+						gameDone();
 
 					}
 
@@ -122,6 +130,11 @@ function pickagain(){
 		document.getElementById(flipArray[3]).src = "./img/tile_1.jpg"
 		pickagain();
 
+	}
+
+
+	function gameDone(){
+		document.getElementById("gameControl").innerHTML = "Play Again"
 	}
 </script>
 </div>
