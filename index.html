@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title> JavaScript</title>
+	<meta name="description" content="page description">
+	<meta name ="author" content="discoveryvip">
+	<meta name ="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<style type="text/css">
+		.gametile{
+			height: 200px;
+			border:#000000 1px solid;
+		}
+
+		.flipimage{
+			width:100%;
+			height:100%;
+			overflow: hidden;
+		}
+
+	</style>
+</head>
+
+<body > 
+<div id = "wrapper">
+<div id="wrapper"></div>
+<div id ="gameboard">
+	
+
+</div>
+<script>
+	var tileImages = ['tile_1.jpg','tile_2.jpg','tile_3.jpg','tile_4.jpg','tile_5.jpg','tile_6.jpg'];
+	console.log(tileImages)
+
+	var solutionArray = tileImages.concat(tileImages)
+	var gameboard = document.getElementById("gameboard");
+	flipArray = new Array();
+	var cardsflippedover = 0;
+
+	shuffleArray(solutionArray)
+
+	startGame()
+	function startGame(){
+		gameboard.innerHTML="";
+		for(var i=0;i<=solutionArray.length-1;i++){
+			displayImage(i)
+		}
+	}
+
+	function shuffleArray(d){
+		for(var c = d.length-1;c>0;c--){
+			var b = Math.floor(Math.random()*(c+1));
+			var a = d[c];
+			d[c] = d[b];
+			d[b] = a;
+		}
+		return d;
+	};
+
+	function displayImage(i){
+			gameboard.innerHTML+='<div class="col-md-3 col-xs-4 gametile "><img id = "cardz'+i+'" src="./img/tile_1.jpg'+'"onclick= "pickCard(\''+solutionArray[i]+'\',\''+i+'\',this); return false;" class="flipimage"></div>';
+	}
+
+	function pickCard(a,b,c){
+		
+		if(cardsflippedover<2){
+			flipArray[cardsflippedover] = solutionArray[b]
+			flipArray[(cardsflippedover+2)] = c.id;
+			cardsflippedover++;
+			console.log(c)
+			c.src ='./img/'+solutionArray[b]
+			if(cardsflippedover==2){
+				if(flipArray[0]==flipArray[1]){
+					console.log('same')
+
+				}else{
+					setInterval(hideCard,3000)
+					console.log('different')
+				}
+			}
+		}	
+		console.log(flipArray)
+
+	}
+
+	function hideCard(){
+		document.getElementById(flipArray[2]).src = "./img/tile_1.jpg"
+		document.getElementById(flipArray[3]).src = "./img/tile_1.jpg"
+	}
+</script>
+</div>
+</body>
+</html>
